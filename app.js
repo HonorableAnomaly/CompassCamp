@@ -75,6 +75,10 @@ app.delete("/campgrounds/:id", async (req, res) => {
 //   res.send(camp);
 // });
 
+app.use((err, req, res, next) => {
+  res.send("Oh boy, something went wrong!");
+});
+
 app.listen(3000, () => {
   console.log("Serving on port 3000...");
 });
