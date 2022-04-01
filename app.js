@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
+const Joi = require("joi");
 const catchAsync = require("./utilities/catchAsync");
 const ExpressError = require("./utilities/ExpressError");
 const methodOverride = require("method-override");
@@ -48,7 +49,24 @@ app.get("/campgrounds/new", (req, res) => {
 app.post(
   "/campgrounds",
   catchAsync(async (req, res, next) => {
-    if (!req.body.campground) throw new ExpressError(400, "Invalid Campground Data");
+    // if (!req.body.campground) throw new ExpressError(400, "Invalid Campground Data");
+    //
+    // THIS IS NOT A MONGOOSE SCHEMA!!! It will attempt to validate before any data gets saved to Mongoose
+    const campgroundSchema = Joi.object({
+      campground: Joi.object({
+        title: Joi.string().required(),
+        price: Joi.number().required().min(0),
+        image: Joi.string().required(),
+        location: Joi.string().required(),
+        description: Joi.string().required(),
+      }).required(),
+    });
+    const { error } = campgroundSchema.validate(req.body);
+    if (error) {
+      const msg = error.details.map((el) => el.message).join(",");
+      throw new ExpressError(400, msg);
+    }
+    //
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
