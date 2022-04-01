@@ -3,6 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const catchAsync = require("./utilities/catchAsync");
+const ExpressError = require("./utilities/ExpressError");
 const methodOverride = require("method-override");
 const Campground = require("./models/campground");
 
@@ -47,6 +48,7 @@ app.get("/campgrounds/new", (req, res) => {
 app.post(
   "/campgrounds",
   catchAsync(async (req, res, next) => {
+    if (!req.body.campground) throw new ExpressError(400, "Invalid campground data");
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
@@ -94,7 +96,13 @@ app.delete(
 //   res.send(camp);
 // });
 
+app.all("*", (req, res, next) => {
+  next(new ExpressError(404, "Page not found!"));
+});
+
 app.use((err, req, res, next) => {
+  const { statusCode = 500, message = "Something went wrong..." } = err;
+  res.status(statusCode);
   res.send("Oh boy, something went wrong!");
 });
 
