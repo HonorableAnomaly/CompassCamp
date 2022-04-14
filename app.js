@@ -3,6 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
+const flash = require("connect-flash");
 // Moved requires to other routers
 // const { campgroundSchema, reviewSchema } = require("./schemas.js");
 // const catchAsync = require("./utilities/catchAsync");
@@ -53,6 +54,13 @@ const sessionConfig = {
   },
 };
 app.use(session(sessionConfig));
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
 
 app.use("/campgrounds", campgrounds);
 app.use("/campgrounds/:id/reviews", reviews);
@@ -63,7 +71,7 @@ app.get("/", (req, res) => {
 
 // ***Initial db save***
 // app.get("/makecampground", async (req, res) => {
-//   const camp = new Campground({ title: "My Backyard", description: "cheap camping!" });
+//   const camp = new Campground({ title: "My Backyard", description: "Cheap camping!" });
 //   await camp.save();
 //   res.send(camp);
 // });
