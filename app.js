@@ -16,8 +16,10 @@ const passport = require("passport");
 const passportLocal = require("passport-local");
 const User = require("./models/user");
 
-const campgrounds = require("./routes/campgrounds");
-const reviews = require("./routes/reviews");
+// Route requires
+const userRoutes = require("./routes/users");
+const campgroundRoutes = require("./routes/campgrounds");
+const reviewRoutes = require("./routes/reviews");
 
 mongoose.connect("mongodb://localhost:27017/compass-camp"),
   {
@@ -77,14 +79,15 @@ app.use((req, res, next) => {
 });
 
 // Initial user creation test
-app.get("/fakeUser", async (req, res) => {
-  const user = new User({ email: "fakeuser@gmail.com", username: "fakeuser" });
-  const newUser = await User.register(user, "chicken");
-  res.send(newUser);
-});
+// app.get("/fakeUser", async (req, res) => {
+//   const user = new User({ email: "fakeuser@gmail.com", username: "fakeuser" });
+//   const newUser = await User.register(user, "chicken");
+//   res.send(newUser);
+// });
 
-app.use("/campgrounds", campgrounds);
-app.use("/campgrounds/:id/reviews", reviews);
+app.use("/", userRoutes);
+app.use("/campgrounds", campgroundRoutes);
+app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 app.get("/", (req, res) => {
   res.render("home");
