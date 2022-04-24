@@ -12,6 +12,9 @@ const methodOverride = require("method-override");
 // Moved requires to other routers
 // const Campground = require("./models/campground");
 // const Review = require("./models/review");
+const passport = require("passport");
+const passportLocal = require("passport-local");
+const User = require("./models/user");
 
 const campgrounds = require("./routes/campgrounds");
 const reviews = require("./routes/reviews");
@@ -53,13 +56,31 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
+
+// Session must be used before 'passport.session'
 app.use(session(sessionConfig));
 app.use(flash());
+
+// Using Passport
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new passportLocal(User.authenticate()));
+
+// Methods for storing and unstoring Users using mongoose passport plugin
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
+});
+
+// Initial user creation test
+app.get("/fakeUser", async (req, res) => {
+  const user = new User({ email: "fakeuser@gmail.com", username: "fakeuser" });
+  const newUser = await User.register(user, "chicken");
+  res.send(newUser);
 });
 
 app.use("/campgrounds", campgrounds);
