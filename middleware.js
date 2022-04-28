@@ -1,6 +1,7 @@
 const ExpressError = require("./utilities/ExpressError");
 const { campgroundSchema, reviewSchema } = require("./schemas.js");
 const Campground = require("./models/campground");
+const Review = require("./models/review");
 const catchAsync = require("./utilities/catchAsync");
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -36,6 +37,16 @@ module.exports.isAuthor = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const campground = await Campground.findById(id);
   if (!campground.author.equals(req.user._id)) {
+    req.flash("error", "That's not your land!");
+    return res.redirect(`/campgrounds/${id}`);
+  }
+  next();
+});
+
+module.exports.isReviewAuthor = catchAsync(async (req, res, next) => {
+  const { id, reviewId } = req.params;
+  const review = await Review.findById(reviewId);
+  if (!review.author.equals(req.user._id)) {
     req.flash("error", "That's not your land!");
     return res.redirect(`/campgrounds/${id}`);
   }
