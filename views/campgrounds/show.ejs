@@ -12,6 +12,7 @@
         <li class="list-group-item text-muted">Founded by <%= campground.author.username %></li>
         <li class="list-group-item">$<%= campground.price%>/night</li>
       </ul>
+      <% if(currentUser && campground.author.equals(currentUser._id)) { %>
       <div class="card-body">
         <a href="/campgrounds/<%=campground._id%>/edit" class="card-link btn btn-info">Edit</a>
         <!-- <a href="/campgrounds" class="card-link btn btn-success">All Campgrounds</a> -->
@@ -19,6 +20,7 @@
           <button class="card-link btn btn-danger">Delete</button>
         </form>
       </div>
+      <% } %>
     </div>
   </div>
   <div class="col-6">
