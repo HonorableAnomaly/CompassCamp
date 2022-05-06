@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/HonorableAnomaly/CompassCamp#readme",
   "dependencies": {
+    "cloudinary": "^1.29.1",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.0.0",
     "ejs": "^3.0.2",
@@ -28,6 +29,7 @@
     "method-override": "^3.0.0",
     "mongoose": "^6.2.7",
     "multer": "^1.4.4",
+    "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
