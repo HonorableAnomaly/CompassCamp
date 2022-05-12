@@ -27,7 +27,12 @@ const seedDB = async () => {
       author: "6269f4895139793a04926989",
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
       title: `${sample(descriptors)} ${sample(places)}`,
-      image: "https://source.unsplash.com/collection/483251/640x426",
+      images: [
+        {
+          url: "https://res.cloudinary.com/h0n0rabl3an0maly/image/upload/v1652330449/CompassCamp/hxpxyfkoekotid6wm1kp.jpg",
+          filename: "CompassCamp/hxpxyfkoekotid6wm1kp",
+        },
+      ],
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet nobis provident possimus reiciendis labore? Dolor veritatis mollitia voluptatibus numquam impedit, recusandae minima saepe maxime delectus iusto itaque doloremque similique suscipit? Repellat officia, molestiae deserunt ducimus pariatur iste quia porro saepe perferendis. Corrupti dicta veniam sed molestias dignissimos provident exercitationem autem maxime quibusdam recusandae voluptatum ad, nulla minima molestiae labore consequuntur? Earum, quos, hic dolor eos eum laudantium quasi est perferendis quidem asperiores odit. At quidem, eius, nihil cumque odit magnam ullam, iste consequuntur tempore debitis soluta sint tempora numquam necessitatibus?",
       price,
