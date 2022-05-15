@@ -61,10 +61,7 @@
         <input type="radio" id="first-rate5" name="review[rating]" value="5" />
         <label for="first-rate5" title="Amazing">5 stars</label>
       </fieldset>
-      <!-- <div class="mb-3">
-        <label for="rating">Rating</label>
-        <input type="range" class="form-range" min="1" max="5" name="review[rating]" id="rating" />
-      </div> -->
+      
       <div class="mb-3">
         <label class="form-label" for="body">Review</label>
         <textarea class="form-control" name="review[body]" id="body" cols="30" rows="5" required></textarea>
@@ -94,7 +91,7 @@
 
 <script>
   const mapboxToken = "<%-process.env.MAPBOX_TOKEN%>";
-  const campground = "<%- JSON.stringify(campground) %>"
+  const campground = "<%- JSON.stringify(campground) %>";
 </script>
 
 <script src="/javascripts/showPageMap.js"></script>
