@@ -3,7 +3,6 @@
 
 <div class="row">
   <div class="col-6">
-    <div id='map' style='width: 400px; height: 300px;'></div>
     <% campground.images.forEach(function(img, i) {%>
     <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
@@ -45,6 +44,7 @@
     </div>
   </div>
   <div class="col-6">
+    <div id='map' style='width: 400px; height: 300px;'></div>
     <% if(currentUser) { %>
     <h4>Leave a Review</h4>
     <form action="/campgrounds/<%=campground._id%>/reviews" class="mb-3 validated-form" method="POST" novalidate>
