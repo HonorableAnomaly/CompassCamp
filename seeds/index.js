@@ -7,7 +7,7 @@ mongoose.connect("mongodb://localhost:27017/compass-camp"),
   {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   };
 
 const db = mongoose.connection;
@@ -28,14 +28,20 @@ const seedDB = async () => {
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
       title: `${sample(descriptors)} ${sample(places)}`,
       images: [
+        // PC
+        // {
+        //   url: "https://res.cloudinary.com/h0n0rabl3an0maly/image/upload/v1652330449/CompassCamp/hxpxyfkoekotid6wm1kp.jpg",
+        //   filename: "CompassCamp/hxpxyfkoekotid6wm1kp",
+        // },
+        // Tablet
         {
-          url: "https://res.cloudinary.com/h0n0rabl3an0maly/image/upload/v1652330449/CompassCamp/hxpxyfkoekotid6wm1kp.jpg",
-          filename: "CompassCamp/hxpxyfkoekotid6wm1kp",
-        },
+          url: "https://res.cloudinary.com/h0n0rabl3an0maly/image/upload/v1652581777/CompassCamp/nv5lcfvpdcltwzf3jp7v.jpg",
+          filename: "CompassCamp/nv5lcfvpdcltwzf3jp7v"
+        }
       ],
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet nobis provident possimus reiciendis labore? Dolor veritatis mollitia voluptatibus numquam impedit, recusandae minima saepe maxime delectus iusto itaque doloremque similique suscipit? Repellat officia, molestiae deserunt ducimus pariatur iste quia porro saepe perferendis. Corrupti dicta veniam sed molestias dignissimos provident exercitationem autem maxime quibusdam recusandae voluptatum ad, nulla minima molestiae labore consequuntur? Earum, quos, hic dolor eos eum laudantium quasi est perferendis quidem asperiores odit. At quidem, eius, nihil cumque odit magnam ullam, iste consequuntur tempore debitis soluta sint tempora numquam necessitatibus?",
-      price,
+      price
     });
     await camp.save();
   }
