@@ -11,14 +11,8 @@ const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
-// Moved requires to other routers
-// const { campgroundSchema, reviewSchema } = require("./schemas.js");
-// const catchAsync = require("./utilities/catchAsync");
 const ExpressError = require("./utilities/ExpressError");
 const methodOverride = require("method-override");
-// Moved requires to other routers
-// const Campground = require("./models/campground");
-// const Review = require("./models/review");
 const passport = require("passport");
 const passportLocal = require("passport-local");
 const User = require("./models/user");
@@ -32,7 +26,7 @@ mongoose.connect("mongodb://localhost:27017/compass-camp"),
   {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
     // Used to be necessary to get rid of a depracation warning
     // useFindAndModify: false
   };
@@ -62,8 +56,8 @@ const sessionConfig = {
     // Set to true by default, even without this property added
     httpOnly: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
+    maxAge: 1000 * 60 * 60 * 24 * 7
+  }
 };
 
 // Session must be used before 'passport.session'
