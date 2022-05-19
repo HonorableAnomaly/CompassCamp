@@ -3,7 +3,7 @@ const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/outdoors-v11",
   center: [-103.5917, 40.6699],
-  zoom: 3
+  zoom: 3,
 });
 
 map.on("load", () => {
@@ -17,7 +17,7 @@ map.on("load", () => {
     data: campgrounds,
     cluster: true,
     clusterMaxZoom: 14, // Max zoom to cluster points on
-    clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+    clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
   });
 
   map.addLayer({
@@ -32,8 +32,8 @@ map.on("load", () => {
       //   * Yellow, 30px circles when point count is between 100 and 750
       //   * Pink, 40px circles when point count is greater than or equal to 750
       "circle-color": ["step", ["get", "point_count"], "#51bbd6", 10, "#f1f075", 30, "#f28cb1"],
-      "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 30, 40]
-    }
+      "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 30, 40],
+    },
   });
 
   map.addLayer({
@@ -44,8 +44,8 @@ map.on("load", () => {
     layout: {
       "text-field": "{point_count_abbreviated}",
       "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-      "text-size": 12
-    }
+      "text-size": 12,
+    },
   });
 
   map.addLayer({
@@ -57,14 +57,14 @@ map.on("load", () => {
       "circle-color": "#11b4da",
       "circle-radius": 4,
       "circle-stroke-width": 1,
-      "circle-stroke-color": "#fff"
-    }
+      "circle-stroke-color": "#fff",
+    },
   });
 
   // inspect a cluster on click
   map.on("click", "clusters", (e) => {
     const features = map.queryRenderedFeatures(e.point, {
-      layers: ["clusters"]
+      layers: ["clusters"],
     });
     const clusterId = features[0].properties.cluster_id;
     map.getSource("campgrounds").getClusterExpansionZoom(clusterId, (err, zoom) => {
@@ -72,7 +72,7 @@ map.on("load", () => {
 
       map.easeTo({
         center: features[0].geometry.coordinates,
-        zoom: zoom
+        zoom: zoom,
       });
     });
   });
@@ -82,9 +82,8 @@ map.on("load", () => {
   // the location of the feature, with
   // description HTML from its properties.
   map.on("click", "unclustered-point", (e) => {
+    const { popUpMarkup } = e.features[0].properties;
     const coordinates = e.features[0].geometry.coordinates.slice();
-    const mag = e.features[0].properties.mag;
-    const tsunami = e.features[0].properties.tsunami === 1 ? "yes" : "no";
 
     // Ensure that if the map is zoomed out such that
     // multiple copies of the feature are visible, the
@@ -93,7 +92,7 @@ map.on("load", () => {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
-    new mapboxgl.Popup().setLngLat(coordinates).setHTML(`magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`).addTo(map);
+    new mapboxgl.Popup().setLngLat(coordinates).setHTML(popUpMarkup).addTo(map);
   });
 
   map.on("mouseenter", "clusters", () => {
