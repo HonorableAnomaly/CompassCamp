@@ -16,6 +16,7 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const passportLocal = require("passport-local");
 const User = require("./models/user");
+const mongoSanitize = require("express-mongo-sanitize");
 
 // Route requires
 const userRoutes = require("./routes/users");
@@ -47,6 +48,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 // Used to tell express to serve a dir
 app.use(express.static(path.join(__dirname, "public")));
+app.use(mongoSanitize());
 
 const sessionConfig = {
   secret: "thisshouldbeabettersecret",
@@ -74,7 +76,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
-  // console.log(req.session);
+  // console.log(req.query);
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
