@@ -16,6 +16,8 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const passportLocal = require("passport-local");
 const User = require("./models/user");
+const helmet = require("helmet");
+
 const mongoSanitize = require("express-mongo-sanitize");
 
 // Route requires
@@ -51,12 +53,14 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize());
 
 const sessionConfig = {
+  name: "session",
   secret: "thisshouldbeabettersecret",
   resave: false,
   saveUninitialized: true,
   cookie: {
     // Set to true by default, even without this property added
     httpOnly: true,
+    // secure: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7
   }
@@ -65,6 +69,7 @@ const sessionConfig = {
 // Session must be used before 'passport.session'
 app.use(session(sessionConfig));
 app.use(flash());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 // Using Passport
 app.use(passport.initialize());
