@@ -25,14 +25,21 @@ const userRoutes = require("./routes/users");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 
-mongoose.connect("mongodb://localhost:27017/compass-camp"),
-  {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    // Used to be necessary to get rid of a depracation warning
-    // useFindAndModify: false
-  };
+const MongoStore = require("connect-mongo");
+const { consumers } = require("stream");
+
+// MongoDB Atlas
+// const dbUrl = process.env.DB_URL;
+// Local DB/Session Store
+const dbUrl = "mongodb://localhost:27017/compass-camp";
+mongoose.connect(dbUrl, {
+  useNewUrlParser: true,
+  // No longer supported
+  // useCreateIndex: true,
+  useUnifiedTopology: true,
+  // Used to be necessary to get rid of a depracation warning
+  // useFindAndModify: false
+});
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -52,7 +59,18 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize());
 
+const store = new MongoStore({
+  mongoUrl: dbUrl,
+  secret: "thisshouldbeabettersecret",
+  touchAfter: 24 * 3600,
+});
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR", e);
+});
+
 const sessionConfig = {
+  store,
   name: "session",
   secret: "thisshouldbeabettersecret",
   resave: false,
