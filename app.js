@@ -29,7 +29,7 @@ mongoose.connect("mongodb://localhost:27017/compass-camp"),
   {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
     // Used to be necessary to get rid of a depracation warning
     // useFindAndModify: false
   };
@@ -62,14 +62,53 @@ const sessionConfig = {
     httpOnly: true,
     // secure: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7
-  }
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
 };
 
 // Session must be used before 'passport.session'
 app.use(session(sessionConfig));
 app.use(flash());
-app.use(helmet({ contentSecurityPolicy: false }));
+
+// Helmet security rules
+// app.use(helmet());
+
+// const scriptSrcUrls = [
+//   "https://stackpath.bootstrapcdn.com/",
+//   "https://api.tiles.mapbox.com/",
+//   "https://api.mapbox.com/",
+//   "https://kit.fontawesome.com/",
+//   "https://cdnjs.cloudflare.com/",
+//   "https://cdn.jsdelivr.com/",
+// ];
+
+// const styleSrcUrls = [
+//   "https://kit-free.fontawesome.com/",
+//   "https://stackpath.bootstrapcdn.com/",
+//   "https://api.mapbox.com/",
+//   "https://api.tiles.mapbox.com/",
+//   "https://fonts.googleapis.com/",
+//   "https://use.fontawesome.com/",
+// ];
+
+// const connectSrcUrls = ["https://api.mapbox.com/", "https://a.tiles.mapbox.com/", "https://b.tiles.mapbox.com/", "https://events.mapbox.com/"];
+
+// const fontSrcUrls = [];
+
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: [],
+//       connectSrc: ["'self'", ...connectSrcUrls],
+//       scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+//       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+//       workerSrc: ["'self'", "blob:"],
+//       objectSrc: [],
+//       imgSrc: ["'self'", "blob:", "data:", "https://res.cloudinary.com/h0n0rabl3an0maly", "https://images.unsplash.com/"],
+//       fontSrc: ["'self'", ...fontSrcUrls],
+//     },
+//   })
+// );
 
 // Using Passport
 app.use(passport.initialize());
