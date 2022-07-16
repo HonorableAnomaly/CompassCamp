@@ -27,7 +27,7 @@ body {
 
 .nav-link:hover {
   border-bottom-color: rgba(255, 255, 255, 0.5);
-  color: olivedrab;
+  color: red;
 }
 
 #button {
@@ -35,5 +35,5 @@ body {
 }
 
 #button:hover {
-  color: olivedrab;
+  color: red;
 }
